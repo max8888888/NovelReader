@@ -5,7 +5,7 @@ android {
     compileSdkVersion build_versions.target_sdk
     buildToolsVersion build_versions.tools_version
     defaultConfig {
-        applicationId "com.example.newbiechen.ireader"
+        applicationId "com.max.app.ireader"
         minSdkVersion build_versions.min_sdk
         targetSdkVersion build_versions.target_sdk
         versionCode 1
