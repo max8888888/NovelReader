@@ -25,6 +25,7 @@ import com.example.newbiechen.ireader.ui.activity.ReadActivity;
 import com.example.newbiechen.ireader.ui.adapter.CollBookAdapter;
 import com.example.newbiechen.ireader.ui.base.BaseMVPFragment;
 import com.example.newbiechen.ireader.utils.RxUtils;
+import com.example.newbiechen.ireader.utils.SharedPreUtils;
 import com.example.newbiechen.ireader.utils.ToastUtils;
 import com.example.newbiechen.ireader.widget.adapter.WholeAdapter;
 import com.example.newbiechen.ireader.widget.itemdecoration.DividerItemDecoration;
@@ -82,15 +83,15 @@ public class BookShelfFragment extends BaseMVPFragment<BookShelfContract.Present
     protected void initClick() {
         super.initClick();
         //推荐书籍
-        Disposable recommendDisp = RxBus.getInstance()
-                .toObservable(RecommendBookEvent.class)
-                .subscribe(
-                        event -> {
-                            mRvContent.startRefresh();
-                            mPresenter.loadRecommendBooks(event.sex);
-                        }
-                );
-        addDisposable(recommendDisp);
+//        Disposable recommendDisp = RxBus.getInstance()
+//                .toObservable(RecommendBookEvent.class)
+//                .subscribe(
+//                        event -> {
+//                            mRvContent.startRefresh();
+//                            mPresenter.loadRecommendBooks(event.sex);
+//                        }
+//                );
+//        addDisposable(recommendDisp);
 
         Disposable donwloadDisp = RxBus.getInstance()
                 .toObservable(DownloadMessage.class)
@@ -102,7 +103,6 @@ public class BookShelfFragment extends BaseMVPFragment<BookShelfContract.Present
                         }
                 );
         addDisposable(donwloadDisp);
-
         //删除书籍 (写的丑了点)
         Disposable deleteDisp = RxBus.getInstance()
                 .toObservable(DeleteResponseEvent.class)
@@ -141,36 +141,7 @@ public class BookShelfFragment extends BaseMVPFragment<BookShelfContract.Present
 
         mCollBookAdapter.setOnItemClickListener(
                 (view, pos) -> {
-                    //如果是本地文件，首先判断这个文件是否存在
-                    CollBookBean collBook = mCollBookAdapter.getItem(pos);
-                    if (collBook.isLocal()) {
-                        //id表示本地文件的路径
-                        String path = collBook.getCover();
-                        File file = new File(path);
-                        //判断这个本地文件是否存在
-                        if (file.exists() && file.length() != 0) {
-                            ReadActivity.startActivity(getContext(),
-                                    mCollBookAdapter.getItem(pos), true);
-                        } else {
-                            String tip = getContext().getString(R.string.nb_bookshelf_book_not_exist);
-                            //提示(从目录中移除这个文件)
-                            new AlertDialog.Builder(getContext())
-                                    .setTitle(getResources().getString(R.string.nb_common_tip))
-                                    .setMessage(tip)
-                                    .setPositiveButton(getResources().getString(R.string.nb_common_sure),
-                                            new DialogInterface.OnClickListener() {
-                                                @Override
-                                                public void onClick(DialogInterface dialog, int which) {
-                                                    deleteBook(collBook);
-                                                }
-                                            })
-                                    .setNegativeButton(getResources().getString(R.string.nb_common_cancel), null)
-                                    .show();
-                        }
-                    } else {
-                        ReadActivity.startActivity(getContext(),
-                                mCollBookAdapter.getItem(pos), true);
-                    }
+                    loadBook(pos);
                 }
         );
 
@@ -183,10 +154,44 @@ public class BookShelfFragment extends BaseMVPFragment<BookShelfContract.Present
         );
     }
 
+    private void loadBook(int pos){
+        //如果是本地文件，首先判断这个文件是否存在
+        CollBookBean collBook = mCollBookAdapter.getItem(pos);
+        if (collBook.isLocal()) {
+            //id表示本地文件的路径
+            String path = collBook.getCover();
+            File file = new File(path);
+            //判断这个本地文件是否存在
+            if (file.exists() && file.length() != 0) {
+                ReadActivity.startActivity(getContext(),
+                        mCollBookAdapter.getItem(pos), true);
+                SharedPreUtils.getInstance().putInt("lastPos", pos);
+            } else {
+                String tip = getContext().getString(R.string.nb_bookshelf_book_not_exist);
+                //提示(从目录中移除这个文件)
+                new AlertDialog.Builder(getContext())
+                        .setTitle(getResources().getString(R.string.nb_common_tip))
+                        .setMessage(tip)
+                        .setPositiveButton(getResources().getString(R.string.nb_common_sure),
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        deleteBook(collBook);
+                                    }
+                                })
+                        .setNegativeButton(getResources().getString(R.string.nb_common_cancel), null)
+                        .show();
+            }
+        } else {
+            ReadActivity.startActivity(getContext(),
+                    mCollBookAdapter.getItem(pos), true);
+        }
+    }
+
     @Override
     protected void processLogic() {
         super.processLogic();
-        mRvContent.startRefresh();
+//        mRvContent.startRefresh();
     }
 
     private void openItemDialog(CollBookBean collBook) {
@@ -299,6 +304,17 @@ public class BookShelfFragment extends BaseMVPFragment<BookShelfContract.Present
         if (mRvContent.isRefreshing()) {
             mRvContent.finishRefresh();
         }
+
+        readLastBook();
+    }
+
+    private void readLastBook(){
+        //读取上一次打开的书籍
+        int lastPos = SharedPreUtils.getInstance().getInt("lastPos", -1);
+        if(lastPos == -1){
+            return;
+        }
+        loadBook(lastPos);
     }
 
     @Override
