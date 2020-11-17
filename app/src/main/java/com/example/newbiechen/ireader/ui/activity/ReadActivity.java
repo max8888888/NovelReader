@@ -415,33 +415,34 @@ public class ReadActivity extends BaseMVPActivity<ReadContract.Presenter>
                 }
         );
 
-        mSbChapterProgress.setOnSeekBarChangeListener(
-                new SeekBar.OnSeekBarChangeListener() {
-                    @Override
-                    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                        if (mLlBottomMenu.getVisibility() == VISIBLE) {
-                            //显示标题
-                            mTvPageTip.setText((progress + 1) + "/" + (mSbChapterProgress.getMax() + 1));
-                            mTvPageTip.setVisibility(VISIBLE);
-                        }
-                    }
-
-                    @Override
-                    public void onStartTrackingTouch(SeekBar seekBar) {
-                    }
-
-                    @Override
-                    public void onStopTrackingTouch(SeekBar seekBar) {
-                        //进行切换
-                        int pagePos = mSbChapterProgress.getProgress();
-                        if (pagePos != mPageLoader.getPagePos()) {
-                            mPageLoader.skipToPage(pagePos);
-                        }
-                        //隐藏提示
-                        mTvPageTip.setVisibility(GONE);
-                    }
-                }
-        );
+        //暂时禁用滑动跳章节滑块
+//        mSbChapterProgress.setOnSeekBarChangeListener(
+//                new SeekBar.OnSeekBarChangeListener() {
+//                    @Override
+//                    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+//                        if (mLlBottomMenu.getVisibility() == VISIBLE) {
+//                            //显示标题
+//                            mTvPageTip.setText((progress + 1) + "/" + (mSbChapterProgress.getMax() + 1));
+//                            mTvPageTip.setVisibility(VISIBLE);
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onStartTrackingTouch(SeekBar seekBar) {
+//                    }
+//
+//                    @Override
+//                    public void onStopTrackingTouch(SeekBar seekBar) {
+//                        //进行切换
+//                        int pagePos = mSbChapterProgress.getProgress();
+//                        if (pagePos != mPageLoader.getPagePos()) {
+//                            mPageLoader.skipToPage(pagePos);
+//                        }
+//                        //隐藏提示
+//                        mTvPageTip.setVisibility(GONE);
+//                    }
+//                }
+//        );
 
         mPvPage.setTouchListener(new PageView.TouchListener() {
             @Override
