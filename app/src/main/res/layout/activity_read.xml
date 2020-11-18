@@ -65,13 +65,15 @@
                         android:id="@+id/read_tv_brief"
                         style="@style/NB.Theme.TextAppearance.Read.TopMenu"
                         android:layout_alignParentRight="true"
-                        android:text="@string/nb.read.brief" />
+                        android:text="@string/nb.read.brief"
+                        android:visibility="gone"/>
 
                     <TextView
                         android:id="@+id/read_tv_community"
                         style="@style/NB.Theme.TextAppearance.Read.TopMenu"
                         android:layout_toLeftOf="@id/read_tv_brief"
-                        android:text="@string/nb.read.community" />
+                        android:text="@string/nb.read.community"
+                        android:visibility="gone"/>
                 </RelativeLayout>
             </android.support.v7.widget.Toolbar>
         </android.support.design.widget.AppBarLayout>
