@@ -118,15 +118,15 @@ public class MainActivity extends BaseTabActivity{
             case R.id.action_search:
                 activityCls = SearchActivity.class;
                 break;
-            case R.id.action_login:
-                break;
-            case R.id.action_my_message:
-                break;
+//            case R.id.action_login:
+//                break;
+//            case R.id.action_my_message:
+//                break;
             case R.id.action_download:
                 activityCls = DownloadActivity.class;
                 break;
-            case R.id.action_sync_bookshelf:
-                break;
+//            case R.id.action_sync_bookshelf:
+//                break;
             case R.id.action_scan_local_book:
 
                 if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M){
@@ -145,14 +145,14 @@ public class MainActivity extends BaseTabActivity{
 
                 activityCls = FileSystemActivity.class;
                 break;
-            case R.id.action_wifi_book:
-                break;
-            case R.id.action_feedback:
-                break;
-            case R.id.action_night_mode:
-                break;
-            case R.id.action_settings:
-                break;
+//            case R.id.action_wifi_book:
+//                break;
+//            case R.id.action_feedback:
+//                break;
+//            case R.id.action_night_mode:
+//                break;
+//            case R.id.action_settings:
+//                break;
             default:
                 break;
         }

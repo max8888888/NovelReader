@@ -241,7 +241,11 @@ public class SearchActivity extends BaseMVPActivity<SearchContract.Presenter>
     @Override
     public void finishHotWords(List<String> hotWords) {
         mHotTagList = hotWords;
-        refreshTag();
+        try {
+            refreshTag();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void refreshTag(){
