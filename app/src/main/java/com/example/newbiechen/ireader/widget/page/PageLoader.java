@@ -1262,7 +1262,7 @@ public abstract class PageLoader {
                         rHeight -= mTextPaint.getTextSize();
                     }
                     // 一页已经填充满了，创建 TextPage
-                    if (rHeight <= 0) {
+                    if (rHeight+20 <= 0) {
                         // 创建Page
                         TxtPage page = new TxtPage();
                         page.position = pages.size();
