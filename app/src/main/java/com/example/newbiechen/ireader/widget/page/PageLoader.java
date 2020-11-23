@@ -10,6 +10,7 @@ import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.support.v4.content.ContextCompat;
 import android.text.TextPaint;
+import android.util.Log;
 
 import com.example.newbiechen.ireader.model.bean.BookRecordBean;
 import com.example.newbiechen.ireader.model.bean.CollBookBean;
@@ -892,8 +893,10 @@ public abstract class PageLoader {
                 canvas.drawText(str, mMarginWidth, top, mTextPaint);
                 if (str.endsWith("\n")) {
                     top += para;
+                    Log.d("xmg", "str="+str+"  段落结尾");// TODO
                 } else {
                     top += interval;
+                    Log.d("xmg", "str="+str+"  段中折行");
                 }
             }
         }
@@ -1262,7 +1265,7 @@ public abstract class PageLoader {
                         rHeight -= mTextPaint.getTextSize();
                     }
                     // 一页已经填充满了，创建 TextPage
-                    if (rHeight+20 <= 0) {
+                    if (rHeight <= 20) {// TODO
                         // 创建Page
                         TxtPage page = new TxtPage();
                         page.position = pages.size();
