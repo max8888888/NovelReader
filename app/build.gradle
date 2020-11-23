@@ -8,8 +8,8 @@ android {
         applicationId "com.max.app.ireader"
         minSdkVersion build_versions.min_sdk
         targetSdkVersion build_versions.target_sdk
-        versionCode 100
-        versionName "1.2.1-1"
+        versionCode 104
+        versionName "1.3.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
     }
@@ -80,4 +80,7 @@ dependencies {
 
     // AndroidTagGroup
     implementation 'me.gujun.android.taggroup:library:1.4@aar'
+
+    // 蒲公英SDK（自动更新）
+    implementation files('libs/pgyer_sdk_3.0.10.jar')
 }

@@ -25,10 +25,10 @@ public class App extends Application {
             startService(new Intent(getContext(), DownloadService.class));
         }
 
-        // 初始化内存分析工具
-        if (!LeakCanary.isInAnalyzerProcess(this)) {
-            LeakCanary.install(this);
-        }
+//        // 初始化内存分析工具
+//        if (!LeakCanary.isInAnalyzerProcess(this)) {
+//            LeakCanary.install(this);
+//        }
     }
 
     public static Context getContext() {

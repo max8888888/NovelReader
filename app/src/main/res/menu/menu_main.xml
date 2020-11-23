@@ -57,9 +57,9 @@
 <!--        android:icon="@drawable/ic_read_menu_night"-->
 <!--        app:showAsAction="never" />-->
 
-<!--    <item-->
-<!--        android:id="@+id/action_settings"-->
-<!--        android:title="@string/nb.menu.action.setting"-->
-<!--        android:icon="@drawable/ic_menu_setting"-->
-<!--        app:showAsAction="never" />-->
+    <item
+        android:id="@+id/action_settings"
+        android:title="检查新版本"
+        android:icon="@drawable/ic_menu_syn"
+        app:showAsAction="never" />
 </menu>
