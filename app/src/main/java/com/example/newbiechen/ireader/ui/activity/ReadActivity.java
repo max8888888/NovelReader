@@ -597,6 +597,20 @@ public class ReadActivity extends BaseMVPActivity<ReadContract.Presenter>
 
             showSystemBar();
         }
+
+        //TODO 点击屏幕中间，呼出菜单时，顺便存储当前进度
+        reSave();
+    }
+
+    private void reSave(){
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (isCollected) {
+                    mPageLoader.saveRecord();
+                }
+            }
+        });
     }
 
     //初始化菜单动画

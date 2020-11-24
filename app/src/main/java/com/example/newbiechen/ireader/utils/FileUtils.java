@@ -1,6 +1,7 @@
 package com.example.newbiechen.ireader.utils;
 
 import android.os.Environment;
+import android.util.Log;
 
 import com.example.newbiechen.ireader.App;
 
@@ -9,8 +10,11 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.Reader;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -266,5 +270,96 @@ public class FileUtils {
             IOUtils.close(bis);
         }
         return charset;
+    }
+
+    //文件夹拷贝
+    public static int copy(String fromFile, String toFile){
+        //要复制的文件目录
+        File[] currentFiles;
+        File root = new File(fromFile);
+        //如同判断SD卡是否存在或者文件是否存在
+        //如果不存在则 return出去
+        if(!root.exists()){
+            return -1;
+        }
+        //如果存在则获取当前目录下的全部文件 填充数组
+        currentFiles = root.listFiles();
+        //目标目录
+        File targetDir = new File(toFile);
+        //创建目录
+        if(!targetDir.exists()){
+            targetDir.mkdirs();
+        }
+        //遍历要复制该目录下的全部文件
+        for(int i= 0;i<currentFiles.length;i++){
+            if(currentFiles[i].isDirectory()){//如果当前项为子目录 进行递归
+                copy(currentFiles[i].getPath() + "/", toFile + currentFiles[i].getName() + "/");
+            }else{//如果当前项为文件则进行文件拷贝
+                CopySdcardFile(currentFiles[i].getPath(), toFile + currentFiles[i].getName());
+            }
+        }
+        return 0;
+    }
+
+    public static String copyFile(String fromFile, String toFile){
+        File from = new File(fromFile);
+        //如同判断SD卡是否存在或者文件是否存在
+        //如果不存在则 return出去
+        if(!from.exists()){
+            return "";
+        }
+        //目标目录
+        File targetDir = new File(toFile);
+        //创建目录
+        if(!targetDir.exists()){
+            targetDir.mkdirs();
+        }
+        String fileName = fromFile.substring(from.getAbsolutePath().lastIndexOf("/"));
+        String toFilePath = toFile + fileName;
+        File to = new File(toFilePath);
+        if(to.exists()){
+            try {
+                to.delete();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        Log.d("xmg", "toFilePath="+toFilePath);
+        int result = CopySdcardFile(fromFile, toFilePath);
+        if(result == 0){
+            return toFilePath;
+        }else{
+            return "";
+        }
+    }
+
+    //要复制的目录下的所有非子目录(文件夹)文件拷贝
+    public static int CopySdcardFile(String fromFile, String toFile){
+        try {
+            InputStream fosfrom = new FileInputStream(fromFile);
+            OutputStream fosto = new FileOutputStream(toFile);
+            byte bt[] = new byte[1024];
+            int c;
+            while ((c = fosfrom.read(bt)) > 0) {
+                fosto.write(bt, 0, c);
+            }
+            fosfrom.close();
+            fosto.close();
+            return 0;
+
+        } catch (Exception ex) {
+            return -1;
+        }
+    }
+
+    public static String getSDCardPath() {
+        File sdRoot;
+        String state = Environment.getExternalStorageState();
+        if (Environment.MEDIA_MOUNTED.equals(state)) {
+            sdRoot = Environment.getExternalStorageDirectory();
+        } else {
+            sdRoot = Environment.getDataDirectory();
+        }
+        return sdRoot.getAbsolutePath();
     }
 }

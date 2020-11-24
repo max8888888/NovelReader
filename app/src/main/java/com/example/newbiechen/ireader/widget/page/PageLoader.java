@@ -885,7 +885,7 @@ public abstract class PageLoader {
                     top += titleInterval;
                 }
             }
-
+//            Log.d("xmg", "lines.size="+mCurPage.lines.size());
             //对内容进行绘制
             for (int i = mCurPage.titleLines; i < mCurPage.lines.size(); ++i) {
                 str = mCurPage.lines.get(i);
@@ -893,10 +893,10 @@ public abstract class PageLoader {
                 canvas.drawText(str, mMarginWidth, top, mTextPaint);
                 if (str.endsWith("\n")) {
                     top += para;
-                    Log.d("xmg", "str="+str+"  段落结尾");// TODO
+//                    Log.d("xmg", "str="+str+"  段落结尾  i="+i);
                 } else {
-                    top += interval;
-                    Log.d("xmg", "str="+str+"  段中折行");
+                    top += interval -1;// TODO -1为了留出空间，预防最后一行文字显示不全。
+//                    Log.d("xmg", "str="+str+"  段中折行  i="+i);
                 }
             }
         }
