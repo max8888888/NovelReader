@@ -101,5 +101,5 @@ dependencies {
     implementation 'me.gujun.android.taggroup:library:1.4@aar'
 
     // 蒲公英SDK（自动更新）
-    implementation files('libs/pgyer_sdk_3.0.10.jar')
+    implementation 'com.pgyersdk:sdk:3.0.10'
 }
